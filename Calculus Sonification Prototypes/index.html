@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Function Sonifier</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script src="js/synth.js"></script>
+    <script src="js/formantSynth.js"></script>
+    <script src="js/sonificationSynth.js"></script>
+
+    <script src="js/parser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
+    <script src="https://wzrd.in/standalone/function-plot@1.16.2"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1>Function Sonifier</h1>
+        </div>
+        <div class="input-group col-sm-12">
+            <span class="input-group-addon">f(x) = </span>
+            <input class="form-control input-g" placeholder="Enter function equation" id="mathTxt" value="tanh(2*sin(x))/tanh(5)">
+            <span class="input-group-btn">
+                <button class="btn btn-success" onclick="sonifyEquation()">Sonify</button>
+            </span>
+        </div>
+        <div id="graph" class="col-sm-12 text-xs-center"></div>
+        <p>f'(x) = <span id="first_derivative">0</span></p>
+        <p>f''(x) = <span id="second_derivative">0</span></p>
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="radio" name="vowel" value="a" onclick="setVowel('a')">
+                <input type="radio" name="vowel" value="e" onclick="setVowel('e')">
+                <input type="radio" name="vowel" value="i" onclick="setVowel('i')">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
