@@ -16,19 +16,19 @@ function FormantSynth(audioContext){
 
     //set up source
     this.source.type = 'sawtooth';
-    this.source.frequency.value = 200;
-    //this.source.start();
+    this.source.frequency.value = 150;
+    this.source.start();
 
     //set up formants
-    this.formantOne.type = 'peaking';
+    this.formantOne.type = 'bandpass';
     this.formantOne.frequency = 600;
     this.formantOne.Q.value = 10;
     this.formantOne.gain.value = 10;
-    this.formantTwo.type = 'peaking';
+    this.formantTwo.type = 'bandpass';
     this.formantTwo.frequency = 1040;
     this.formantTwo.Q.value = 5;
     this.formantTwo.gain.value = 5;
-    this.formantThree.type = 'peaking';
+    this.formantThree.type = 'bandpass';
     this.formantThree.frequency = 2250;
     this.formantThree.gain.value = 2;
     this.formantThree.Q.value = 2;
@@ -42,10 +42,12 @@ function FormantSynth(audioContext){
     this.amp.gain.value = 0.5;
 
     this.source.connect(this.formantOne);
-    this.formantOne.connect(this.formantTwo);
-    this.formantTwo.connect(this.formantThree);
+    this.source.connect(this.formantTwo);
+    this.source.connect(this.formantThree);
     this.formantThree.connect(this.amp);
-    this.amp.connect(lowPass);
+    this.formantTwo.connect(this.amp);
+    this.formantOne.connect(this.amp);
+    this.amp.connect(this.panner);
     lowPass.connect(this.panner);
     this.panner.connect(audioContext.destination);
 
