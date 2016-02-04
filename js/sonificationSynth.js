@@ -8,7 +8,7 @@ var synth={};
 var formantSynth;
 function audioSetup(){
     synth = new Synth(audioCtx);
-    formantSynth = new FormantSynth(audioCtx);
+    //formantSynth = new FormantSynth(audioCtx);
 }
 audioSetup();
 
@@ -38,6 +38,14 @@ function sonifyEquation(){
     });
 
     graph.on('mousemove',function(x,y){
+        setX(x);
+    });
+
+    graph.on('mouseout',function(){
+        synth.amp.gain.value = 0;
+    });
+
+    function setX(x){
         var yVal = Parser.evaluate(eqnString, { x: x  });
         var deltaY = Parser.evaluate(eqnString, {x: x+0.001});
         var thirdY = Parser.evaluate(eqnString, {x: x+0.002});
@@ -54,10 +62,21 @@ function sonifyEquation(){
         synth.sonifyValues(yVal,firstDerivative,secondDerivative);
 
         synth.panner.pan.value = (x)/5;
+    }
 
-    });
+    var previous = false;
+    Leap.loop(function(frame){
 
-    graph.on('mouseout',function(){
-        synth.amp.gain.value = 0;
+        if(frame.pointables.length){
+            previous = true;
+            var tool = frame.pointables[0];
+            if(! synth.amp.gain.value){
+                synth.amp.gain.value = 0.5;
+            }
+            setX(tool.stabilizedTipPosition[0]/25);
+        }else if(previous){
+                previous = false;
+                synth.amp.gain.value = 0;
+        }
     });
 }
