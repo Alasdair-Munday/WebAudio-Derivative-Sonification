@@ -8,6 +8,8 @@ function FormantSynth(audioContext){
     var audioContext = audioContext || AudioContext ? new AudioContext() : new webkitAudioContext();
 
     this.source = audioContext.createOscillator();
+    this.inverted = audioContext.createOscillator();
+
     this.formantOne = audioContext.createBiquadFilter();
     this.formantTwo = audioContext.createBiquadFilter();
     this.formantThree = audioContext.createBiquadFilter();
@@ -19,6 +21,21 @@ function FormantSynth(audioContext){
     this.source.frequency.value = 150;
     this.source.start();
 
+    this.inverted.type = 'sawtooth';
+    this.inverted.frequency.value = 150;
+    this.inverted.start();
+
+    var invert = audioContext.createGain();
+    invert.gain.value = -1;
+
+    this.inverted.connect(invert);
+
+    var invertedDelay = audioContext.createDelay();
+    invert.connect(invertedDelay);
+
+    invertedDelay.delayTime.value = 0.5 / 150;
+
+
     //set up formants
     this.formantOne.type = 'bandpass';
     this.formantOne.frequency = 600;
@@ -27,11 +44,11 @@ function FormantSynth(audioContext){
     this.formantTwo.type = 'bandpass';
     this.formantTwo.frequency = 1040;
     this.formantTwo.Q.value = 5;
-    this.formantTwo.gain.value = 5;
+    this.formantTwo.gain.value = 10;
     this.formantThree.type = 'bandpass';
     this.formantThree.frequency = 2250;
     this.formantThree.gain.value = 2;
-    this.formantThree.Q.value = 2;
+    this.formantThree.Q.value = 10;
 
     var lowPass = audioContext.createBiquadFilter();
     lowPass.type = 'lowpass';
@@ -41,14 +58,23 @@ function FormantSynth(audioContext){
     this.panner.pan.value = 0;
     this.amp.gain.value = 0.5;
 
-    this.source.connect(this.formantOne);
-    this.source.connect(this.formantTwo);
-    this.source.connect(this.formantThree);
+    this.source.connect(lowPass);
+    invertedDelay.connect(lowPass);
+
+
+    var sourceGain = audioContext.createGain();
+    lowPass.connect(sourceGain);
+
+    sourceGain.gain.value = 0.5;
+
+
+    sourceGain.connect(this.formantOne);
+    sourceGain.connect(this.formantTwo);
+    sourceGain.connect(this.formantThree);
     this.formantThree.connect(this.amp);
     this.formantTwo.connect(this.amp);
     this.formantOne.connect(this.amp);
     this.amp.connect(this.panner);
-    lowPass.connect(this.panner);
     this.panner.connect(audioContext.destination);
 
 

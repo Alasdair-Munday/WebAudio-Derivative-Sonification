@@ -11,6 +11,13 @@ function audioSetup(){
     //formantSynth = new FormantSynth(audioCtx);
 }
 audioSetup();
+var firstDerivative, secondDerivative, yGauge, xGauge;
+$(document).ready(function () {
+     firstDerivative = new Gauge(d3.select(document.getElementById('first-derivative')),0,10,0,"f\'(x)");
+     secondDerivative = new Gauge(d3.select(document.getElementById('second-derivative')),0,10,0,"f\'\'(x)");
+    yGauge = new Gauge(d3.select(document.getElementById('y-gauge')),0,1,0,"Y");
+    xGauge =  new Gauge(d3.select(document.getElementById('x-gauge')),0,5,0,"X");
+});
 
 
 function setVowel(vowel){
@@ -27,7 +34,8 @@ function sonifyEquation(){
         width: 600,
         disableZoom: true,
         data: [{
-            fn: eqnString
+            fn: eqnString,
+            color: "#ffffff"
         }]
     };
 
@@ -50,16 +58,18 @@ function sonifyEquation(){
         var deltaY = Parser.evaluate(eqnString, {x: x+0.001});
         var thirdY = Parser.evaluate(eqnString, {x: x+0.002});
 
-        var firstDerivative = (deltaY - yVal)/ 0.001;
+        var firstDerivativeVal = (deltaY - yVal)/ 0.001;
         var deltafirstDerivative = (thirdY - deltaY)/0.001;
-        var secondDerivative = ( deltafirstDerivative - firstDerivative)/ 0.001;
+        var secondDerivativeVal = ( deltafirstDerivative - firstDerivativeVal)/ 0.001;
         options.annotations = [{x:x}];
         var plot = functionPlot(options);
-        document.getElementById('first_derivative').innerHTML = firstDerivative;
-        document.getElementById('second_derivative').innerHTML = secondDerivative;
+        firstDerivative.setData(firstDerivativeVal);
+        secondDerivative.setData(secondDerivativeVal);
+        xGauge.setData(x);
+        yGauge.setData(yVal);
 
 
-        synth.sonifyValues(yVal,firstDerivative,secondDerivative);
+        synth.sonifyValues(yVal,firstDerivativeVal,secondDerivativeVal);
 
         synth.panner.pan.value = (x)/5;
     }

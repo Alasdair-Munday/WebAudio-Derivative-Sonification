@@ -4,35 +4,38 @@
     <meta charset="UTF-8">
     <title>Function Sonifier</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
+    <script src="js/gauge.js"></script>
     <script src="js/synth.js"></script>
     <script src="js/formantSynth.js"></script>
     <script src="js/sonificationSynth.js"></script>
     <script src="js/parser.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
     <script src="https://wzrd.in/standalone/function-plot@1.16.2"></script>
     <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="jumbotron">
-            <h1>Function Sonifier</h1>
+    <div class="container-fluid text-center">
+
+        <h1>Function Sonifier</h1>
+        <div class="col-sm-3">
+            <p id="x-gauge"></p>
+            <p id="y-gauge"></p>
         </div>
-        <div class="input-group col-sm-12">
+        <div class="input-group col-sm-4 col-sm-offset-4">
             <span class="input-group-addon">f(x) = </span>
             <input class="form-control input-g" placeholder="Enter function equation" id="mathTxt" value="tanh(2*sin(x))/tanh(5)">
             <span class="input-group-btn">
-                <button class="btn btn-success" onclick="sonifyEquation()">Sonify</button>
+                <button class="btn btn-primary" onclick="sonifyEquation()">Sonify</button>
             </span>
         </div>
-        <div id="graph" class="col-sm-12 text-xs-center"></div>
-        <p>f'(x) = <span id="first_derivative">0</span></p>
-        <p>f''(x) = <span id="second_derivative">0</span></p>
-        <div class="row">
-            <div class="col-sm-6">
-                <input type="radio" name="vowel" value="a" onclick="setVowel('a')">
-                <input type="radio" name="vowel" value="e" onclick="setVowel('e')">
-                <input type="radio" name="vowel" value="i" onclick="setVowel('i')">
-            </div>
+        <div id="graph" class="col-sm-6 text-center">
+        </div>
+        <div class="col-sm-3">
+            <p id="first-derivative"></p>
+            <p id="second-derivative"></p>
+
         </div>
     </div>
 </body>
