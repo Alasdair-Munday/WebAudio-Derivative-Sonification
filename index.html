@@ -5,6 +5,8 @@
     <title>Function Sonifier</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
     <script src="js/gauge.js"></script>
@@ -13,7 +15,7 @@
     <script src="js/sonificationSynth.js"></script>
     <script src="js/parser.js"></script>
     <script src="https://wzrd.in/standalone/function-plot@1.16.2"></script>
-    <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container-fluid text-center">
@@ -30,7 +32,25 @@
                 <button class="btn btn-primary" onclick="sonifyEquation()">Sonify</button>
             </span>
         </div>
-        <div id="graph" class="col-sm-6 text-center">
+        <div class="col-sm-6 text-center">
+            <span id="graph"></span>
+            <div class="btn-group col-sm-12 text-center">
+                <button type="button" class="btn btn-default" onclick="reset()">
+                    <span class="glyphicon glyphicon-step-backward" ></span>
+                </button>
+                <button type="button" class="btn btn-default" onclick="stop()">
+                    <span class="glyphicon glyphicon-stop" ></span>
+                </button>
+                <button type="button" class="btn btn-default" onclick="play()">
+                    <span class="glyphicon glyphicon-play"></span>
+                </button>
+                <button type="button" class="btn btn-default" onclick="pause()">
+                    <span class="glyphicon glyphicon-pause"></span>
+                </button>
+                <button type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-step-forward"></span>
+                </button>
+            </div>
         </div>
         <div class="col-sm-3">
             <p id="first-derivative"></p>
