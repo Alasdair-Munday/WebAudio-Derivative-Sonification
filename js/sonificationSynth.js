@@ -16,6 +16,11 @@ var axies = {
     yMax : 1
 };
 
+
+function setRange(){
+    xMin()
+}
+
 function audioSetup(){
     synth = new Synth(audioCtx);
     //formantSynth = new FormantSynth(audioCtx);
