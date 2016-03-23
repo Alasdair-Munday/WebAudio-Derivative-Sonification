@@ -429,6 +429,7 @@ var Parser = (function (scope) {
 
 		this.ops1 = {
 			"sin": Math.sin,
+			"ln":Math.log,
 			"cos": Math.cos,
 			"tan": Math.tan,
 			"asin": Math.asin,

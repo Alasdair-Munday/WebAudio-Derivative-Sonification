@@ -6,6 +6,8 @@
 function Synth (audioContext){
     var audioContext = audioContext || AudioContext ? new AudioContext() : new webkitAudioContext();
 
+    this.fMin = 200;
+    this.fxSemitoneRatio = 24/2;
 
 
     this.panner = audioContext.createStereoPanner();
@@ -21,6 +23,8 @@ function Synth (audioContext){
     this.osc1.start();
     this.osc2.type = 'square';
     this.osc2.start();
+    this.sub = audioContext.createOscillator();
+    this.sub.start();
 
 
 
@@ -48,20 +52,44 @@ function Synth (audioContext){
     //setup audio graph
     this.osc1.connect(this.filter);
     this.osc2.connect(this.filter);
+    var subAmp = audioContext.createGain();
+    subAmp.gain.value = 0.2;
+
+    this.sub.connect(subAmp);
+    subAmp.connect(this.amp);
+
     this.filter.connect(this.amp);
     this.amp.connect(this.panner);
     this.panner.connect(audioContext.destination);
+
+
+    this.setNoteRange = function(fMax,fMin,yMax,yMin){
+        this.fMin = fMin;
+        var semitones = 12*Math.log2(fMax/fMin);
+
+        var yRange = yMax - yMin;
+
+        this.fxSemitoneRatio = semitones/yRange;
+    };
+
+    this.getPitch = function(fx){
+
+        var n = fx* this.fxSemitoneRatio;
+
+        return Math.pow(2,n/12)* this.fMin;
+    }
 
     //methods
     this.setFrequency = function(frequency){
         this.osc1.frequency.value = frequency;
         this.osc2.detune.value = this.detune;
         this.osc2.frequency.value = frequency/2;
+        this.sub.frequency.value = frequency/2;
     };
 
     this.sonifyValues = function(fx,dx,dx2){
         this.lfo.frequency.value = 3* Math.abs(dx) ;
         this.filter.frequency.value = 200 + 50*Math.abs(dx2);
-        this.setFrequency( 200 + fx*100);
+        this.setFrequency(this.getPitch(fx));
     }
 }

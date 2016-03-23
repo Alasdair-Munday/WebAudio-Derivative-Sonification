@@ -8,6 +8,8 @@ var synth={};
 var formantSynth;
 var eqnString;
 var graph;
+var fMax = 800;
+var fMin = 200;
 
 var axies = {
     xMin : -5,
@@ -17,8 +19,26 @@ var axies = {
 };
 
 
-function setRange(){
-    xMin()
+function setRange(parameterString,element){
+
+    document.getElementById(parameterString+'RangeLabel').innerHTML = element.value;
+
+    switch(parameterString) {
+        case 'x':
+            axies.xMax = element.value;
+            axies.xMin = -element.value;
+            xGauge.setData(playhead,0, axies.xMax);
+            break;
+        case 'y' :
+            axies.yMax = element.value;
+            axies.yMin = -element.value;
+            yGauge.setData(playhead,0, axies.yMax);
+            synth.setNoteRange(fMax,fMin,axies.yMax,axies.yMin);
+            break;
+    }
+    updateOptions();
+    sonifyEquation();
+
 }
 
 function audioSetup(){
@@ -81,13 +101,17 @@ function setVowel(vowel){
     formantSynth.setVowel(vowel);
 }
 
-var options = {
-    target: '#graph',
-    yAxis: {domain: [axies.yMin, axies.yMax]},
-    xAxis: {domain: [axies.xMin,axies.xMax]},
-    width: 600,
-    disableZoom: true
-};
+var options = {};
+function updateOptions(){
+    options = {
+        target: '#graph',
+        yAxis: {domain: [axies.yMin, axies.yMax]},
+        xAxis: {domain: [axies.xMin, axies.xMax]},
+        width: 600,
+        disableZoom: true
+    }
+}
+updateOptions();
 
 function sonifyEquation(){
     eqnString = document.getElementById("mathTxt").value;
@@ -133,7 +157,7 @@ function setX(x){
 
     synth.sonifyValues(yVal,firstDerivativeVal,secondDerivativeVal);
 
-    synth.panner.pan.value = (x)/5;
+    synth.panner.pan.value = (x)/axies.xMax;
 }
 
 var previous = false;
