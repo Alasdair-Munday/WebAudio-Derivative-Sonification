@@ -22,44 +22,92 @@
     <div class="container-fluid text-center">
 
         <h1>Function Sonifier</h1>
-        <div class="col-sm-3">
-            <p id="x-gauge"></p>
-            <label for="xRange">Range: &plusmn; <span id="xRangeLabel">5</span></label>
-            <input value="5" type="range" id="xRange"  min="0" max="10" onchange="setRange('x',this)">
-            <p id="y-gauge"></p>
-            <label for="yRange">Range: &plusmn; <span id="yRangeLabel">1</span></label>
-            <input value="1" type="range" id="yRange"  min="0" max="10" onchange="setRange('y',this)">
+
+
+        <ul class="nav nav-tabs col-md-10" style="margin-bottom:10px;">
+            <li role="presentation" onclick="setView('main')" id="main-tab" class="active"><a href="#">Function Sonification</a></li>
+            <li role="presentation" onclick="setView('help')" id="help-tab"><a href="#">Help</a></li>
+        </ul>
+        <div class="col-sm-12" id="main">
+            <div class="col-sm-3">
+                <p id="x-gauge"></p>
+                <label for="xRange">Range: &plusmn; <span id="xRangeLabel">5</span></label>
+                <input value="5" type="range" id="xRange"  min="0" max="10" onchange="setRange('x',this)">
+                <p id="y-gauge"></p>
+                <label for="yRange">Range: &plusmn; <span id="yRangeLabel">1</span></label>
+                <input value="1" type="range" id="yRange"  min="0" max="10" onchange="setRange('y',this)">
+            </div>
+            <div class="input-group col-sm-4 col-sm-offset-4">
+                <span class="input-group-addon">f(x) = </span>
+                <input class="form-control input-g" placeholder="Enter function equation" id="mathTxt" value="tanh(2*sin(x))/tanh(5)">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" onclick="sonifyEquation()">Sonify</button>
+                </span>
+            </div>
+            <div class="col-sm-6 text-center">
+                <span id="graph"></span>
+                <div class="btn-group col-sm-12 text-center">
+                    <button type="button" class="btn btn-default" onclick="reset()">
+                        <span class="glyphicon glyphicon-step-backward" ></span>
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="stop()">
+                        <span class="glyphicon glyphicon-stop" ></span>
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="play()">
+                        <span class="glyphicon glyphicon-play"></span>
+                    </button>
+                    <button type="button" class="btn btn-default" onclick="pause()">
+                        <span class="glyphicon glyphicon-pause"></span>
+                    </button>
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-step-forward"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <p id="first-derivative"></p>
+                <p id="second-derivative"></p>
+            </div>
+
+
         </div>
-        <div class="input-group col-sm-4 col-sm-offset-4">
-            <span class="input-group-addon">f(x) = </span>
-            <input class="form-control input-g" placeholder="Enter function equation" id="mathTxt" value="tanh(2*sin(x))/tanh(5)">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" onclick="sonifyEquation()">Sonify</button>
-            </span>
-        </div>
-        <div class="col-sm-6 text-center">
-            <span id="graph"></span>
-            <div class="btn-group col-sm-12 text-center">
-                <button type="button" class="btn btn-default" onclick="reset()">
-                    <span class="glyphicon glyphicon-step-backward" ></span>
-                </button>
-                <button type="button" class="btn btn-default" onclick="stop()">
+
+        <div class="col-sm-10 col-sm-offset-1" id="help" style="display: none">
+            <div class="col-sm-12">
+                <h3>Help</h3>
+                <div class="col-sm-6 col-sm-offset-3 well" style="color:#000">
+                    <p>This is a tool, currently under development, that portrays mathematical functions using sound and visuals.
+                        It's intended use is as an immersive instructional tool for teaching the concepts of slope and curvature in introductory calculus classes.</p>
+                </div>
+            </div>
+            <h3>Example sounds</h3>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" onclick="stopExample()">
                     <span class="glyphicon glyphicon-stop" ></span>
                 </button>
-                <button type="button" class="btn btn-default" onclick="play()">
+                <button type="button" class="btn btn-default" onclick="startExample()">
                     <span class="glyphicon glyphicon-play"></span>
                 </button>
-                <button type="button" class="btn btn-default" onclick="pause()">
-                    <span class="glyphicon glyphicon-pause"></span>
-                </button>
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-step-forward"></span>
-                </button>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <p id="first-derivative"></p>
-            <p id="second-derivative"></p>
+
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <h4>f(x)</h4>
+                    <input type="range" min="-100" max="100" id="example-y" onchange="updateExample()">
+                    <span id="example-y-value">0</span>
+                </div>
+                <div class="col-sm-4">
+                    <h4>f'(x)</h4>
+                    <input type="range" min="-100" max="100" id="example-dx" onchange="updateExample()">
+                    <span id="example-dx-value">0</span>
+                </div>
+                <div class="col-sm-4">
+                    <h4>f''(x)</h4>
+                    <input type="range" min="-100" max="100" id="example-dx2" onchange="updateExample()">
+                    <span id="example-dx2-value">0</span>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>

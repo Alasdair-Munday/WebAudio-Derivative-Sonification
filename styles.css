@@ -6,3 +6,11 @@ body{
 .btn-primary{
     background-color:#3048A1 ;
 }
+
+.nav-tabs>li a{
+    color: #fff;
+}
+
+.nav-tabs>li.active a{
+    color: #333333;
+}

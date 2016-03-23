@@ -18,6 +18,49 @@ var axies = {
     yMax : 1
 };
 
+var example ={
+    y:0,
+    dx:0,
+    dx2:0
+};
+
+
+function startExample(){
+    synth.amp.gain.value = 0.2;
+    synth.sonifyValues(example.y,example.dx,example.dx2);
+}
+
+function stopExample(){
+    synth.amp.gain.value = 0;
+}
+
+$("#example-y").change(updateExample);
+
+function updateExample(){
+    example.y = $("#example-y").val() /100 * axies.yMax;
+    example.dx = $("#example-dx").val()/25;
+    example.dx2 = $("#example-dx2").val()/10;
+
+    $("#example-y-value").html(example.y);
+    $("#example-dx-value").html(example.dx);
+    $("#example-dx2-value").html(example.dx2);
+    startExample();
+}
+
+
+function setView(viewString){
+    if(viewString == "main"){
+        $("#main-tab").addClass("active");
+        $("#help-tab").removeClass("active");
+        $("#help").hide();
+        $("#main").show();
+    }else{
+        $("#help-tab").addClass("active");
+        $("#main-tab").removeClass("active");
+        $("#main").hide();
+        $("#help").show();
+    }
+}
 
 function setRange(parameterString,element){
 
