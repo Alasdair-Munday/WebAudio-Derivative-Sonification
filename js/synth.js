@@ -5,7 +5,7 @@
 
 function Synth (audioContext){
     var audioContext = audioContext || AudioContext ? new AudioContext() : new webkitAudioContext();
-
+    var playing  = false;
     this.fMin = 200;
     this.fxSemitoneRatio = 24/2;
 
@@ -77,7 +77,7 @@ function Synth (audioContext){
         var n = fx* this.fxSemitoneRatio;
 
         return Math.pow(2,n/12)* this.fMin;
-    }
+    };
 
     //methods
     this.setFrequency = function(frequency){
@@ -91,5 +91,20 @@ function Synth (audioContext){
         this.lfo.frequency.value = 3* Math.abs(dx) ;
         this.filter.frequency.value = 200 + 50*Math.abs(dx2);
         this.setFrequency(this.getPitch(fx));
+    };
+
+    this.start = function () {
+        this.amp.gain.value = 1;
+        playing = true;
+    };
+
+    this.stop = function(){
+        this.amp.gain.value = 0;
+        playing = false;
+    };
+
+    this.toggle = function(){
+        this.amp.gain.value = playing? 0:1;
+        playing = ! playing;
     }
 }

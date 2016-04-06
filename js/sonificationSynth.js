@@ -26,12 +26,12 @@ var example ={
 
 
 function startExample(){
-    synth.amp.gain.value = 0.2;
+    synth.start();
     synth.sonifyValues(example.y,example.dx,example.dx2);
 }
 
 function stopExample(){
-    synth.amp.gain.value = 0;
+    synth.stop();
 }
 
 $("#example-y").change(updateExample);
@@ -113,12 +113,12 @@ var reverse = false;
 
 function play(){
     playId = setInterval(nextFrame,1/(sampleRate*1000));
-    synth.amp.gain.value = 1;
+    synth.start();
 }
 function pause(){
     clearInterval(playId);
     playId = null;
-    synth.amp.gain.value = 0;
+    synth.stop();
 }
 
 function stop(){
@@ -167,7 +167,7 @@ function sonifyEquation(){
     graph = functionPlot(options);
 
     graph.on('mouseover',function(){
-        synth.amp.gain.value = 0.5;
+        synth.start();
     });
 
     graph.on('mousemove',function(x,y){
@@ -176,7 +176,7 @@ function sonifyEquation(){
 
     graph.on('mouseout',function(){
         if(!playId)
-            synth.amp.gain.value = 0;
+            synth.stop();
     });
 
 }
@@ -210,11 +210,11 @@ Leap.loop(function(frame){
         previous = true;
         var tool = frame.pointables[0];
         if(! synth.amp.gain.value){
-            synth.amp.gain.value = 0.5;
+            synth.start();
         }
         setX(tool.stabilizedTipPosition[0]/25);
     }else if(previous){
         previous = false;
-        synth.amp.gain.value = 0;
+        synth.stop();
     }
 });
